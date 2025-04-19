@@ -1,0 +1,28 @@
+@startuml
+title Flujo de Conversión de Monedas con Caché
+
+autonumber
+
+actor Usuario
+participant "ConsolaUI" as UI
+participant "GestorTasas" as Cache
+participant "ExchangeRateClient" as API
+participant "ConversorMonedas" as Lógica
+
+Usuario -> UI: Inicia aplicación
+UI -> Cache: obtenerTasas()
+alt Archivo existe y es válido
+    Cache --> UI: tasas desde archivo
+else Archivo no existe o está desactualizado
+    Cache -> API: obtenerTasasDesdeUSD()
+    API --> Cache: tasas desde API
+    Cache -> Cache: guarda tasas.json
+    Cache --> UI: tasas actualizadas
+end
+
+UI -> Usuario: Solicita moneda origen y destino
+Usuario -> UI: Ingreso de datos
+UI -> Lógica: convertir(monto, origen, destino, tasas)
+Lógica --> UI: resultado
+UI -> Usuario: Muestra resultado
+@enduml

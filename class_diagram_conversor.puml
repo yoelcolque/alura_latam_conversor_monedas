@@ -1,0 +1,53 @@
+@startuml
+title Diagrama de Clases - Conversor de Monedas
+
+' Paquetes
+package "com.alura.conversor.app" {
+    interface ConversorUI {
+        +iniciar(): void
+    }
+
+    class ConsolaUI implements ConversorUI {
+        -MONEDAS: List<String>
+        +iniciar(): void
+        -mostrarOpciones(): void
+        -leerOpcion(scanner): int
+    }
+
+    class Main {
+        +main(args: String[]): void
+    }
+}
+
+package "com.alura.conversor.api" {
+    class GestorTasas {
+        -ARCHIVO_CACHE: String
+        -tasas: Map<String, Double>
+        -ultimaFecha: LocalDate
+        +obtenerTasas(): Map<String, Double>
+        +getFechaUltimaActualizacion(): LocalDate
+        -cargarOActualizarCache(): void
+        -actualizarCacheDesdeAPI(): void
+    }
+
+    class ExchangeRateClient {
+        +obtenerTasasDesdeUSD(): Map<String, Double>
+    }
+
+    class ConversorMonedas {
+        +convertir(monto: double, origen: String, destino: String, tasas: Map<String, Double>): double
+    }
+
+    class ApiKeyReader {
+        +leer(ruta: String): String
+    }
+}
+
+' Relaciones
+Main --> ConversorUI
+ConsolaUI ..|> ConversorUI
+ConsolaUI --> GestorTasas
+ConsolaUI --> ConversorMonedas
+GestorTasas --> ExchangeRateClient
+ExchangeRateClient --> ApiKeyReader
+@enduml
