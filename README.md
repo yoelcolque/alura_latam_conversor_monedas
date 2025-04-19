@@ -43,6 +43,6 @@ Esto permite que múltiples conversiones usen un único conjunto de tasas por d�
 A continuación se visualiza la diferencia acumulada
 de llamadas entre un sistema sin caché (consulta directa por cada conversión)
 y el sistema con caché diario:
-![Comparación cache vs directo](docs/grad.png)
+![Comparación cache vs directo](docs/graf.png)
 
 ---
